@@ -4,6 +4,7 @@
 from wxbot import *
 import ConfigParser
 import json
+from xbchat import *
 
 
 class TulingWXBot(WXBot):
@@ -13,15 +14,23 @@ class TulingWXBot(WXBot):
         self.tuling_key = ""
         self.robot_switch = True
 
+        self.xb_active = True
+        self.xb = XBChat("", "")
+
         try:
             cf = ConfigParser.ConfigParser()
             cf.read('conf.ini')
             self.tuling_key = cf.get('main', 'key')
+
         except Exception:
             pass
         print 'tuling_key:', self.tuling_key
 
     def tuling_auto_reply(self, uid, msg):
+
+        if self.xb_active:
+            return self.xb.send_msg(msg)
+
         if self.tuling_key:
             url = "http://www.tuling123.com/openapi/api"
             user_id = uid.replace('@', '')[:30]

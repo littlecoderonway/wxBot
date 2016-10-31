@@ -809,6 +809,7 @@ class WXBot:
             r = self.session.post(url, data=data, headers=headers)
         except (ConnectionError, ReadTimeout):
             return False
+        print(r.text)
         dic = r.json()
         return dic['BaseResponse']['Ret'] == 0
 
